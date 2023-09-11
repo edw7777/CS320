@@ -16,6 +16,14 @@ evaluation of fact(N) in OCaml yields an Overflow
 exception.
 *)
 
+let rec factorial(n) = 
+  if n > 0 then n * factorial(n-1) else 1
+
+let rec loop(n) = 
+  if factorial(n) > 0 then loop(n+1) else n
+
+let output = loop(0);;
+
 (* ****** ****** *)
 
 (*
@@ -35,8 +43,6 @@ Please implement a function that converts a given
 integer to a string that represents the integer:
 fun int2str(i0: int): string
 *)
-
-
 
 
 (* ****** ****** *)
