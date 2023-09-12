@@ -22,7 +22,7 @@ let rec factorial(n) =
 let rec loop(n) = 
   if factorial(n) > 0 then loop(n+1) else n
 
-let output = loop(0);;
+let myAns = loop(0);;
 
 (* ****** ****** *)
 
