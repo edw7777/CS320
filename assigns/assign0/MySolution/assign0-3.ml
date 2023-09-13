@@ -25,12 +25,13 @@ let string_concatenate (s1: string) (s2: string): string =
   string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))
 
 let rec helper(i0: int):string = 
-  if i0 = 0 then str(chr(i0 mod 10 +48)) 
+  if i0 = 0 then "" 
   else string_concatenate(helper(i0 / 10)) (str(chr(i0 mod 10 +48)))
 
 let rec int2str (i0: int): string =
+  if i0 = 0 then "0" else
   if i0 < 0 then string_concatenate("-") (helper(-1*i0)) else helper(i0)
-  
-let test = int2str (-1234567);;
+
+let test = int2str(0);;
 
 (* ****** ****** *)
