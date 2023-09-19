@@ -1,36 +1,4 @@
-#use "../assign0.ml";;
-
-(** adds the reverse of generic list xs to generic list ys: xs=[1;2;3] ys=[4;5;6] = [3;2;1;4;5;6] **)
-let rec list_revapp(xs: 'a list)(ys: 'a list): 'a list =
-  match xs with
-  | [] -> ys
-  | x1 :: xs -> list_revapp(xs)(x1 :: ys)
-;;
-let list_reverse(xs: 'a list): 'a list = list_revapp(xs)([]);;
-
-(** transforms the work done by fwork into a list. **)
-let list_make_fwork(fwork: ('x0 -> unit) -> unit): 'x0 list =
-  let res = ref([]) in
-    let work(x0) = (res := (x0 :: !res))
-    in(*let*)(fwork(work); list_reverse(!res) )
-;;
-(** The result of the entire expression is a string that represents the characters processed by the fwork function **)
-let string_make_fwork(fwork: (char -> unit) -> unit): string =
-  let xs =
-    Array.of_list(list_make_fwork(fwork)) 
-  in String.init (Array.length(xs)) (fun i -> xs.(i))
-;;
-
-let string_get_at(cs:string)(i0:int): char = string_get (cs, i0);;
-
-(** converts int digit to a character **)
-let char_of_digit (d0: int): char =
-  let () = assert(d0 >= 0) in
-    let () = assert(d0 <= 9) in 
-      chr(ord('0') + d0)
-;;(* end of [char_of_digit] *)
-
-(** **)
+#use "./../../../classlib/OCaml/MyOCaml.ml";;
 
 (*
 assign1-2: 10 points
