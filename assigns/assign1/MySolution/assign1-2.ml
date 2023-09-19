@@ -1,3 +1,5 @@
+#use "../assign0.ml";;
+
 (** adds the reverse of generic list xs to generic list ys: xs=[1;2;3] ys=[4;5;6] = [3;2;1;4;5;6] **)
 let rec list_revapp(xs: 'a list)(ys: 'a list): 'a list =
   match xs with
@@ -19,13 +21,7 @@ let string_make_fwork(fwork: (char -> unit) -> unit): string =
   in String.init (Array.length(xs)) (fun i -> xs.(i))
 ;;
 
-let string_get_at(cs:string)(i0:int): char = String.get cs i0;;
-let string_length = String.length;;
-let string_init = String.init;;
-let string_get(cs, i0) = String.get cs i0;;
-let ord = Char.code;;
-let str(c0) = String.make 1 c0
-let chr = Char.chr;;
+let string_get_at(cs:string)(i0:int): char = string_get (cs, i0);;
 
 (** converts int digit to a character **)
 let char_of_digit (d0: int): char =

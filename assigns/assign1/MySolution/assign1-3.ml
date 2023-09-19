@@ -49,4 +49,4 @@ let rec helper_1(cs:string) (curr: char) (curr_index: int) (index: int): bool =
 let string_avoid_132 (cs: string): bool = 
   helper_1 (cs) (string_get_at(cs) (0)) (0) (1)
 
-let test = string_avoid_132("164987654321");;
+let test = string_avoid_132("123465789");;
