@@ -42,6 +42,6 @@ let rec helper_1(cs:string) (curr: char) (curr_index: int) (index: int): bool =
     else helper_1(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+2)
 
 let string_avoid_132 (cs: string): bool = 
-  helper_1 (cs) (string_get_at(cs) (0)) (0) (1)
+  if string_length(cs) == 0 then true else helper_1 (cs) (string_get_at(cs) (0)) (0) (1)
 
-let test = string_avoid_132("123465789");;
+let test = string_avoid_132("");;
