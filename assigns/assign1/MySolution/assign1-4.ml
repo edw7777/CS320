@@ -66,4 +66,4 @@ let rec intrep_helper (ds1:string) (ds2:string) (len1: int) (len2:int) (carryove
 let intrep_add(ds1:string) (ds2:string): string = 
   intrep_helper (ds1) (ds2) (string_length(ds1) - 1) (string_length(ds2) - 1) (0)
 
-let test = intrep_add("142186")("621934");;
+let test = intrep_add("888888888888888888888888888888888888888888888888888888888888")("999999999999999999999999999999999999999999999999999999999999");;

@@ -28,21 +28,22 @@ avoid.
 fun string_avoid_132(cs: string): bool
 *)
 
-let rec helper_2(cs:string) (curr:char) (curr_index:int) (index: int): bool = 
+let rec helper_2(cs:string) (curr:char) (curr_index:int) (index: int) (a_holder: int): bool = 
   if index >= string_length(cs) - 1 then true else
-    if index > string_length(cs) then helper_2(cs) (string_get_at(cs) (curr_index)) (curr_index+1) (curr_index+1) else
-      if string_get_at(cs) (curr_index) > string_get_at(cs)(curr_index +1) then false else true
+    if index > string_length(cs) then helper_2(cs) (string_get_at(cs) (curr_index)) (curr_index+1) (curr_index+1) (a_holder) else
+      if string_get_at(cs) (curr_index) > string_get_at(cs)(curr_index +1) && string_get_at(cs) (curr_index+1) > string_get_at(cs) (a_holder) then false else 
+        helper_2(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+2) (a_holder)
 
-let rec helper_3(cs:string) (curr: char) (curr_index: int) (index: int) : bool = 
+let rec helper_3(cs:string) (curr: char) (curr_index: int) (index: int) (a_holder: int) : bool = 
   if curr_index >= string_length(cs) - 2 && index == string_length(cs) - 1 then true else
-  if index > string_length(cs) then helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+1) else
-    if string_get_at(cs) (curr_index) > string_get_at(cs)(curr_index+1) then helper_2(cs) (string_get_at(cs) (curr_index+1)) (curr_index) (index)
-    else helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index)
+  if index > string_length(cs) then helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+1) (a_holder) else
+    if string_get_at(cs) (curr_index) > string_get_at(cs)(curr_index+1) then helper_2(cs) (string_get_at(cs) (curr_index+1)) (curr_index) (index) (a_holder)
+    else helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+2) (a_holder)
 
 let rec helper_1(cs:string) (curr: char) (curr_index: int) (index: int): bool = 
   if curr_index >= string_length(cs) - 3 && index == string_length(cs)-1 then true else
   if index > string_length(cs) then helper_1(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+1) else
-    if string_get_at(cs) (curr_index) < string_get_at(cs) (curr_index + 1) then helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index) (index)
+    if string_get_at(cs) (curr_index) < string_get_at(cs) (curr_index + 1) then helper_3(cs) (string_get_at(cs) (curr_index+1)) (curr_index) (index) (curr_index)
     else helper_1(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+2)
 
 let string_avoid_132 (cs: string): bool = 

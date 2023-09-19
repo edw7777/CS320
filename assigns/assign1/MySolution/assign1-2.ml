@@ -65,4 +65,4 @@ let rec helper(cs1:string) (cs2:string) (index: int) (totallen: int) (work: char
 let string_merge(cs1: string) (cs2: string): string =
   string_make_fwork (fun work ->(helper (cs1) (cs2) (0) (string_length(cs1) + string_length(cs2)-1) (work)))
 
-let test = string_merge("abcde") ("12345");;
+let test = string_merge("2222222222222") ("2468");;
