@@ -1,26 +1,4 @@
-(* ****** ****** *)
-let chr = Char.chr
-let ord = Char.code
-let str(c0) = String.make 1 c0
-
-let string_init = String.init
-let string_length = String.length
-let string_get(cs, i0) = String.get cs i0
-let string_get_at(cs:string)(i0:int): char = String.get cs i0;;
-
-(** converts int digit to a character **)
-let char_of_digit (d0: int): char =
-  let () = assert(d0 >= 0) in
-    let () = assert(d0 <= 9) in 
-      chr(ord('0') + d0)
-;;(* end of [char_of_digit] *)
-
-(** converts character to a digit**)
-let digit_of_char(ch: char): int =
-  let () = assert(ch >= '0') in
-    let () = assert(ch <= '9') in 
-      ord(ch) - ord('0')
-;;(* end of [digit_of_char] *)
+#use "./../../../classlib/OCaml/MyOCaml.ml";;
 (* ****** ****** *)
 (*
 assign1-4: 20 points
@@ -40,13 +18,13 @@ Note that ds1 and ds2 can be arbitrarily long. Thus,
 converting ds1 and ds2 to integers can cause overflow.
 *)
 let helper_substring(cs: string) (index: int): char = 
-  string_get(cs, index)
+  string_get_at(cs) (index)
 
 let substring(cs:string): string =
   string_init(string_length(cs)-1)(fun i -> helper_substring(cs) (i+1))
 
 let concat_helper(index: int) (s1: string) (s2: string): char =
-  if index <= string_length(s1) - 1 then string_get(s1, index) else string_get(s2, index - string_length(s1))
+  if index <= string_length(s1) - 1 then string_get_at (s1) (index) else string_get_at(s2) (index - string_length(s1))
 
 let string_concatenate (s1: string) (s2: string): string =
   string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))

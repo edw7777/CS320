@@ -1,9 +1,4 @@
-(** length s is the length (number of bytes/characters) of s **)
-let string_length = String.length;;
-
-(** get_at s i is the character at index i in s. This is the same as writing s.[i] **)
-let string_get_at(cs:string)(i0:int): char = String.get cs i0;;
-
+#use "./../../../classlib/OCaml/MyOCaml.ml";;
 (*
 assign1-3: 10 points
 A 3-letter sequence abc is 132-like
