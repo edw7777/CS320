@@ -14,7 +14,7 @@ For instance, if cs1 = "abcde" and cs2 = "1234", then
 string_merge(cs1)(cs2) equals "1234abcde"
 *)
 let helper_substring(cs: string) (index: int): char = 
-  string_get(cs, index)
+  string_get_at(cs) (index)
 
 let substring(cs:string): string =
   string_init(string_length(cs)-1)(fun i -> helper_substring(cs) (i+1))
