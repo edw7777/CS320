@@ -22,12 +22,15 @@ For instance, given "1234511111", the function
 string_longest_ascend returns "111111".
 *)  
 let rec substring (xs: string) (trav_index) (start: int) (finish: int): string = 
-  if trav_index > finish then "" else string_get_at(xs) (trav_index) ^ substring (xs:string) (trav_index+1) (start) (finish)
+  if trav_index > finish then "" else str(string_get_at(xs) (trav_index)) ^ substring (xs:string) (trav_index+1) (start) (finish)
 
-let rec helper (xs: string) (index: int) (trav_index: int) (start: int) (finish: int): string = 
+let rec helper (xs: string) (index: int) (trav_index: int) (max: int) (start: int) (finish: int): string = 
   if index >= string_length(xs) - 1 then substring (xs) (index) (index) (finish) else
-    if string_get_at(xs) (index) <= string_get_at(xs) (index+1) then helper(xs) (index) (index) (trav_index) (index) (index+1) else
-      helper(xs)
+    if ord(string_get_at(xs) (index)) <= ord(string_get_at(xs) (index+1)) then helper(xs) (index) (index) (trav_index) (index) (index+1) else
+      if finish - start + 1 > max then helper (xs) (index + 1) (index + 2) (finish-start+1) (index+1) (index+2) else
+      helper(xs) (index+1) (index+2) (max) (index+1) (index+2)
  
 let string_longest_ascend(xs: string): string = 
-  helper (xs) (0) (1) (0) (0)
+  (print_endline) ("Is this even working");
+  helper (xs) (0) (1) (0) (0) (0)
+let test = string_longest_ascend("1324561111");;
