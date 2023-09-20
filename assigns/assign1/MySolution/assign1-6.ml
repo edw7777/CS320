@@ -24,7 +24,7 @@ fun string_avoid_1324(cs: string): bool
 let rec helper_4(cs:string) (curr:char) (curr_index:int) (index: int) (b_holder: int): bool =
   if index >= string_length(cs) - 1 then true else
     if index > string_length(cs) then helper_4(cs) (string_get_at(cs) (curr_index)) (curr_index+1) (curr_index+1) (b_holder) else
-      if string_get_at(cs) (curr_index) < string_get_at(cs)(curr_index +1) && string_get_at(cs) (curr_index+1) > string_get_at(cs) (b_holder) then false else 
+      if string_get_at(cs) (curr_index) > string_get_at(cs)(curr_index +1) && string_get_at(cs) (curr_index+1) > string_get_at(cs) (b_holder) then false else 
         helper_4(cs) (string_get_at(cs) (curr_index+1)) (curr_index+1) (curr_index+2) (b_holder)
 
 let rec helper_2(cs:string) (curr:char) (curr_index:int) (index: int) (a_holder: int): bool = 
@@ -48,6 +48,6 @@ let rec helper_1(cs:string) (curr: char) (curr_index: int) (index: int): bool =
 let string_avoid_1324 (cs: string): bool = 
   if string_length(cs) == 0 then true else helper_1 (cs) (string_get_at(cs) (0)) (0) (1)
 
-let test = string_avoid_1324("1657")
+let test = string_avoid_1324("1324")
 
 (* ****** ****** *)
