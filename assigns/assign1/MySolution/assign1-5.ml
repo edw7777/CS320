@@ -24,13 +24,18 @@ string_longest_ascend returns "111111".
 let rec substring (xs: string) (trav_index) (start: int) (finish: int): string = 
   if trav_index > finish then "" else str(string_get_at(xs) (trav_index)) ^ substring (xs:string) (trav_index+1) (start) (finish)
 
-let rec helper (xs: string) (index: int) (trav_index: int) (max: int) (start: int) (finish: int): string = 
-  if index >= string_length(xs) - 1 then substring (xs) (index) (index) (finish) else
-    if ord(string_get_at(xs) (index)) <= ord(string_get_at(xs) (index+1)) then helper(xs) (index) (index) (trav_index) (index) (index+1) else
-      if finish - start + 1 > max then helper (xs) (index + 1) (index + 2) (finish-start+1) (index+1) (index+2) else
-      helper(xs) (index+1) (index+2) (max) (index+1) (index+2)
- 
+  (*substring (xs) (index) (start) (finish)*)
+let rec helper (xs: string) (current_index: int) (prev_index): string = 
+  if current_index == string_length(xs) then "" else
+    if prev_index == -1 || string_get_at(xs) (prev_index) <= string_get_at(xs) (current_index) then 
+      let take = helper(xs) (current_index+1) (current_index) in
+      let notake = helper(xs) (current_index+1) (prev_index) in
+      if string_length(take) < string_length(notake) then notake else str(string_get_at(xs) (current_index)) ^ take
+    else
+      helper(xs) (current_index+1) (prev_index)
+      
+
 let string_longest_ascend(xs: string): string = 
-  (print_endline) ("Is this even working");
-  helper (xs) (0) (1) (0) (0) (0)
+  if string_length(xs) == 0 then "" else helper (xs) (0) (-1)
+
 let test = string_longest_ascend("1324561111");;
