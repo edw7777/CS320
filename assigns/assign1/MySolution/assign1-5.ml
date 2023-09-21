@@ -22,7 +22,7 @@ For instance, given "1234511111", the function
 string_longest_ascend returns "111111".
 *)  
 let concat_helper(index: int) (s1: string) (s2: string): char =
-  if index <= string_length(s1) - 1 then string_get(s1, index) else string_get(s2, index - string_length(s1))
+  if index <= string_length(s1) - 1 then string_get_at(s1, index) else string_get_at(s2, index - string_length(s1))
 
 let string_concatenate (s1: string) (s2: string): string =
   string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))
