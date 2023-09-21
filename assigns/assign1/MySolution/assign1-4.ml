@@ -30,16 +30,16 @@ let string_concatenate (s1: string) (s2: string): string =
   string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))
 
 let rec intrep_helper (ds1:string) (ds2:string) (len1: int) (len2:int) (carryover: int): string = 
-  if len1 == -1 && len2 > -1 then intrep_helper (ds1) (ds2) (len1) (len2-1) (0) ^ str(char_of_digit(ord(string_get_at(ds2) (len2)) - 48 + carryover)) else
-  if len1 > -1 && len2 == -1 then intrep_helper (ds1) (ds2) (len1-1) (len2) (0) ^ str(char_of_digit(ord(string_get_at(ds1) (len1)) - 48 + carryover)) else
+  if len1 == -1 && len2 > -1 then string_concatenate(intrep_helper (ds1) (ds2) (len1) (len2-1) (0)) (str(char_of_digit(ord(string_get_at(ds2) (len2)) - 48 + carryover))) else
+  if len1 > -1 && len2 == -1 then string_concatenate(intrep_helper (ds1) (ds2) (len1-1) (len2) (0)) (str(char_of_digit(ord(string_get_at(ds1) (len1)) - 48 + carryover))) else
   if len1 == - 1 && len2 == -1 then "" else
   if (ord(string_get_at(ds1) (len1)) - 48) + (ord(string_get_at (ds2) (len2)) - 48) + carryover >= 10 && len1 == 0 && len2 == 0
-    then "1"^str(char_of_digit((digit_of_char(string_get_at(ds1) (len1)) + digit_of_char( string_get_at(ds2) (len2))+carryover) mod 10)) 
+    then string_concatenate("1") (str(char_of_digit((digit_of_char(string_get_at(ds1) (len1)) + digit_of_char( string_get_at(ds2) (len2))+carryover) mod 10)))
   else 
     if (ord(string_get_at(ds1) (len1)) - 48) + (ord(string_get_at (ds2) (len2)) - 48) + carryover >= 10 then
-    intrep_helper(ds1) (ds2) (len1-1) (len2-1) (1) ^ str(char_of_digit((digit_of_char(string_get_at(ds1) (len1)) + digit_of_char(string_get_at(ds2) (len2))+carryover) mod 10))
+    string_concatenate(intrep_helper(ds1) (ds2) (len1-1) (len2-1) (1)) (str(char_of_digit((digit_of_char(string_get_at(ds1) (len1)) + digit_of_char(string_get_at(ds2) (len2))+carryover) mod 10)))
     else
-    intrep_helper(ds1) (ds2) (len1-1) (len2-1) (0) ^ str(char_of_digit(digit_of_char(string_get_at(ds1) (len1)) + digit_of_char(string_get_at(ds2) (len2)) + carryover))
+    string_concatenate(intrep_helper(ds1) (ds2) (len1-1) (len2-1) (0)) (str(char_of_digit(digit_of_char(string_get_at(ds1) (len1)) + digit_of_char(string_get_at(ds2) (len2)) + carryover)))
 
 let intrep_add(ds1:string) (ds2:string): string = 
   intrep_helper (ds1) (ds2) (string_length(ds1) - 1) (string_length(ds2) - 1) (0)

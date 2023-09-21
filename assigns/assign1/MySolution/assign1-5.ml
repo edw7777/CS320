@@ -21,16 +21,18 @@ string_longest_ascend returns "123456"
 For instance, given "1234511111", the function
 string_longest_ascend returns "111111".
 *)  
-let rec substring (xs: string) (trav_index) (start: int) (finish: int): string = 
-  if trav_index > finish then "" else str(string_get_at(xs) (trav_index)) ^ substring (xs:string) (trav_index+1) (start) (finish)
+let concat_helper(index: int) (s1: string) (s2: string): char =
+  if index <= string_length(s1) - 1 then string_get(s1, index) else string_get(s2, index - string_length(s1))
 
-  (*substring (xs) (index) (start) (finish)*)
+let string_concatenate (s1: string) (s2: string): string =
+  string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))
+
 let rec helper (xs: string) (current_index: int) (prev_index): string = 
   if current_index == string_length(xs) then "" else
     if prev_index == -1 || string_get_at(xs) (prev_index) <= string_get_at(xs) (current_index) then 
       let take = helper(xs) (current_index+1) (current_index) in
       let notake = helper(xs) (current_index+1) (prev_index) in
-      if string_length(take) < string_length(notake) then notake else str(string_get_at(xs) (current_index)) ^ take
+      if string_length(take) < string_length(notake) then notake else string_concatenate(str(string_get_at(xs) (current_index))) (take)
     else
       helper(xs) (current_index+1) (prev_index)
       
