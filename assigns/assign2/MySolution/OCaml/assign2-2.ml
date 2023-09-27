@@ -72,7 +72,7 @@ mylist_get_at(xs: 'a mylist)(i0: int): 'a = ...
 
 let rec mylist_get_at (xs: 'a mylist) (i0: int): 'a =
     match xs with
-    | MyNil -> mylist_subscript_exn() 
+    | MyNil -> mylist_subscript_exn()
     | MyCons (x, _) when i0 = 0 -> x 
     | MyCons (_, rest) when i0 > 0 -> mylist_get_at rest (i0 - 1) 
     | MySnoc (_, x) when i0 = 0 -> x 
