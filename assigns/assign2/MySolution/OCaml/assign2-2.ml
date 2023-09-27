@@ -52,7 +52,17 @@ let rec mylist_length(xs: 'a mylist): int =
 | MyReverse l -> mylist_length(l)
 | MyAppend2 (l1, l2) -> mylist_length(l1) + mylist_length(l2)
 
+type
+('xs, 'x0) foreach = 'xs -> ('x0 -> unit) -> unit
 
+type
+('xs, 'x0) rforeach = 'xs -> ('x0 -> unit) -> unit
+
+type
+('xs, 'x0) iforeach = 'xs -> (int -> 'x0 -> unit) -> unit
+
+type
+('xs, 'x0, 'r0) foldleft = 'xs -> 'r0 -> ('r0 -> 'x0 -> 'r0) -> 'r0
 (*
 //
 Assign2-2: 10 points
