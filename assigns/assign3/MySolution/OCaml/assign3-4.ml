@@ -35,6 +35,6 @@ let helper(word: string) (index: int) =
 
 let list_of_buddies(word:string): string list =
   let (lebron, _) = string_foldleft (word) ([], 0) (fun(res, index)(_) -> ((list_append (res) (helper(word) (index))), index+1)) in 
-  let (output, _) = list_foldleft (lebron) ([], 0) (fun(acc, iter_index)(variation) -> if variation == word then (acc, iter_index+1) else ((variation :: acc), iter_index+1)) in output
+  let (output, _) = list_foldleft (lebron) ([], 0) (fun(acc, iter_index)(variation) -> if word = variation then (acc, iter_index+1) else ((variation :: acc), iter_index+1))in output
 
 let test = list_of_buddies("love");;
