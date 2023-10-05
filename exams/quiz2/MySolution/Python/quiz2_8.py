@@ -19,5 +19,19 @@
 #
 # *)
 
-def foreach_to_get_at(foreach): # your implementation below
+def foreach_to_get_at(foreach):
+    def get_at(xs):
+        def get(i):
+            result = []
+            def work(x):
+                result.append(x)
+            foreach(xs, work)
 
+            if 0 <= i < len(result):
+                return result[i]
+            else:
+                raise Subscript exception
+
+        return get
+
+    return get_at
