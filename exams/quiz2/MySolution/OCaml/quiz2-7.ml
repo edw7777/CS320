@@ -19,9 +19,8 @@ match xs with
 
 let list_append_tail_recursive(xs: 'a list)(ys: 'a list): 'a list =
   let append_element acc x = x :: acc in
-  list_foldleft(ys) xs append_element
+  list_foldleft(ys) xs append_elemen
 
-  
 let xs = [1; 2; 3]
 let ys = [4; 5; 6]
 let result = list_append_tail_recursive xs ys;;
