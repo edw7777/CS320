@@ -59,8 +59,6 @@ class mylist_reverse(mylist):
     def __init__(self,cons2):
         self.ctag = 1
         self.cons2 = cons2
-    def get_cons1(self):
-        
     def get_cons2(self):
         return self.cons2
 
