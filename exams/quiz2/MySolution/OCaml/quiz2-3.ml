@@ -12,4 +12,4 @@ What is the value of mystery3 ? Your answer:
 (* ************************************************ *)
 
 let mystery3 : int = (* YOUR ANSWER *)
-  16
+  512

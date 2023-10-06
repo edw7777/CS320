@@ -10,9 +10,14 @@ is empty, raise the Empty exception
 *)
 
 (* ************************************************ *)
-
+exception Empty 
 let list_length(xs) = 
   list_foldleft(xs) (0) (fun(res)(index) -> res + 1)
 
-let list_last(xs: 'a list): 'a = 
-  list_foldleft(xs) (0, list_length(xs)) (fun(res, iter_index)(element) -> if list_length(xs) - 1 == iter_index then (acc+element, iter_index+1) else (acc, iter_index+1))
+  let list_last(xs: 'a list): 'a =
+  match xs with
+  | [] -> ""
+  | x1 :: xs ->
+    list_foldleft (xs) (x1, 0) (fun(res, iter_index)(element) -> if iter_index = (list_length(xs) - 1) then (element, iter_index) else (res, iter_index+1))
+
+let test = list_last [a;b;c];;
