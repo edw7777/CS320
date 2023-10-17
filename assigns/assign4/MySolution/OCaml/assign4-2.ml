@@ -43,6 +43,8 @@ let theNatPairs: (int*int) stream =
   let secondnum = second in
   stream_zip (firstnum)(secondnum)
   ;;
+
+  
 (*let StrCons(x1, xs) = first();;
 let StrCons(x1, xs) = xs();;
 let StrCons(x1, xs) = xs();;
