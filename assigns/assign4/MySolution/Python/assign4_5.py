@@ -23,7 +23,7 @@ def list_make_fwork(fwork):
         res.append(x0)
 
     fwork(lambda x: work(x))
-    return reversed(res)
+    return res
 
 def int1_foreach(n0, work_func):
     i0 = 0
