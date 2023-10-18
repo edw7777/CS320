@@ -1,4 +1,4 @@
-def nats1():
+""" def nats1():
     i = 0
     while True:
         yield i
@@ -71,7 +71,7 @@ def theNatPairs_cubesum(fxs, fys):
     
     return theNatPairs_cubesum_stream
 
-  
+"""
 """
 let rec
 stream_merge
