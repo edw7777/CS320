@@ -20,10 +20,12 @@ gtree_streamize_bfs(xs: 'a gtree): 'a stream
 //
 *)
 
+(*
 let rec gtree_steamize_dfs(xs: 'a gtree): 'a stream =
   let rec dfs (stack: 'a gtree list) : 
     match node with 
     | GTNil -> []
     | GTcons (value, children) -> 
+      *)
 
 (* ****** ****** *)

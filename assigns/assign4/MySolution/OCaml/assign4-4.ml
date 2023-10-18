@@ -15,7 +15,10 @@ the enumeration should be of the following order
 let list_permute(xs: 'a list): 'a list stream
 *)
 
-let rec insert_all_positions x lst =
+(*let list_permute(xs: 'a list): 'a list stream = 
+  list_foldleft(xs) ([[]]) (fun(res)(first_element) -> first_element :: ) *)
+
+(* let rec insert_all_positions x lst =
   let rec insert_at x lst pos =
     match pos, lst with
     | 0, _ -> x :: lst
@@ -39,4 +42,6 @@ let rec list_permute (xs: 'a list): 'a list stream =
       StrCons (List.hd lst, fxs)
   in
   fun () -> permute_aux xs
+
+  *)
 (* ****** ****** *)
