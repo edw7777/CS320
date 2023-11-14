@@ -1,0 +1,31 @@
+1) The grammer is ambigious and this example 1 ; 2 ; 3
+        <expr>                      <expr>
+        /     \                     /   \
+  <expr>   ;   <expr>         <expr>  ;   <expr>
+  /     \         |               |       /     \
+<expr> ; <expr> ; <expr>      <expr>  ;  <expr> ; <expr>
+
+
+2)
+<id> ::= a | b | c | ... | z
+<dig> ::= 0 | 1 | 2 | ... | 9
+<expr2> = () | <dig> | <id>
+        | let <id> = <expr> in <expr>
+        | begin <expr> end
+
+<expr> = <expr2> ; <expr> | <expr2>
+
+
+3) In the above example 1 ; 2 ; 3
+        <expr>
+        /     \
+  <expr2>   ;   <expr>
+      |         /       \
+    <dig>  ;  <expr2>  ; <expr>
+      |         |          \
+      1    ;  <dig>    ;    <expr2>
+                |               |
+                2       ;     <dig>
+                                |
+                                3
+1 ; 2 ; 3
