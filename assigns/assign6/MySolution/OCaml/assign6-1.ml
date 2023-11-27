@@ -65,8 +65,8 @@ let rec sexpr_to_string (e: sexpr) : string =
     let y = string_append (acc) (" ") in 
     string_append(y)(sexpr_to_string(expr))
   ))) (")")
-  | SMul(y) -> string_append(string_append("(mul") (list_foldleft(x)("")(fun (acc)(expr) -> 
-    let a = string_append (acc) (" ") in 
+  | SMul(x) -> string_append(string_append("(mul") (list_foldleft(x)("")(fun (acc)(expr) -> 
+    let y = string_append (acc) (" ") in 
     string_append(y)(sexpr_to_string(expr))
   ))) (")")
 

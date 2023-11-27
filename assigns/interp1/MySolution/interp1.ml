@@ -12,4 +12,34 @@ Notes:
 
 *)
 
+type const = 
+   | Int of int
+   | Bool of bool
+   | Unit
+
+type com = 
+   | Push of const
+   | Pop
+   | Trace
+   | Add
+   | Sub
+   | Mul
+   | Div
+   | And
+   | Or
+   | Not
+   | Lt
+   | Gt
+
+type coms = com list
+
+type prog = coms
+
+let rec prog_parse = 
+   
+
 let interp (s : string) : string list option = (* YOUR CODE *)
+   let cs =  string_listsize s in
+   match prog_parse()(cs) with
+   | Some (e, []) -> Some e
+   | _ -> None
