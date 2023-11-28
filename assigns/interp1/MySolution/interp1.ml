@@ -66,6 +66,14 @@ let parse_bool : const parser=
    pure( (Bool (false)))
    )
 
+let parse_unit : const parser =
+   let* _ = char('U') in
+   let* _ = char('n') in
+   let* _ = char('i') in
+   let* _ = char('t') in
+   let* _ = ws in
+   pure( (Unit))
+
 let parse_constant () : const parser =
    (
    let* int = parse_num in
@@ -77,7 +85,7 @@ let parse_constant () : const parser =
    )
    <|> 
    (
-   pure (Unit)
+   parse_unit
    )
 
 let com_parse() : com parser =
@@ -229,14 +237,10 @@ match coms_parse()(cs) with
 | Some (e, []) -> Some e
 | _ -> None
 
-(*let test = parse ("Push True;
-Push True;
-And;
-Push False;
-Or;
-Not;
-Trace;
-");; *)
+(* let test = parse ("Push Unit;
+Push Unit;
+Trace;");; 
+*)
 (*Some [Push (Bool false); Push (Int 3); Gt]*)
 
 let to_int(input: const) : int =
@@ -322,10 +326,7 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | None -> None
    | Some (x) -> Some (big_interp(x)([])([]))
 
-let test = interp ("Push True;
-Push True;
-And;
+let test = interp ("Push Unit;
+Push Unit;
 Trace;
-
 ");;
-
