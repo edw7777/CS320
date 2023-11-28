@@ -47,8 +47,6 @@ let sexpr_parse(s : string) : sexpr option =
   | Some (e, []) -> Some e
   | _ -> None
 
-let test = sexpr_parse("(mul 34 (mul 43) 43)")
-
 (*
 let rec sexpr_to_string (e: sexpr) : string = 
   match e with
@@ -69,6 +67,3 @@ let rec sexpr_to_string (e: sexpr) : string =
     let y = string_append (acc) (" ") in 
     string_append(y)(sexpr_to_string(expr))
   ))) (")")
-
-let test1 = sexpr_to_string((SMul [SAdd [SInt 1; SInt 2]; SInt 3; SMul [SInt 1]]))
-;;
