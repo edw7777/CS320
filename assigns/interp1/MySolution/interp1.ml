@@ -100,6 +100,7 @@ let com_parse() : com parser =
    let* _ = char('o') in
    let* _ = char('p') in
    let* _ = char(';') in
+   let* _ = ws in
    pure(Pop)
    )
    <|>
@@ -111,30 +112,37 @@ let com_parse() : com parser =
    let* _ = char('c') in
    let* _ = char('e') in
    let* _ = char(';') in
+   let* _ = ws in
    pure(Trace)
    )
    <|>
    (
+      let* _ = ws in
       let* _ = char('A') in
       let* _ = char('d') in
       let* _ = char('d') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Add)
    )
    <|>
    (
+      let* _ = ws in
       let* _ = char('S') in
       let* _ = char('u') in
       let* _ = char('b') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Sub)
    )
    <|>
    (
+      let* _ = ws in
       let* _ = char('M') in
       let* _ = char('u') in
       let* _ = char('l') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Mul)
    )
    <|>
@@ -144,6 +152,7 @@ let com_parse() : com parser =
       let* _ = char('i') in
       let* _ = char('v') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Div)
    )
    <|>
@@ -153,6 +162,7 @@ let com_parse() : com parser =
       let* _ = char('n') in
       let* _ = char('d') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(And)
    )
    <|>
@@ -161,7 +171,8 @@ let com_parse() : com parser =
       let* _ = char('O') in
       let* _ = char('r') in
       let* _ = char(';') in
-   pure(Or)
+      let* _ = ws in
+      pure(Or)
    )
    <|>
    (
@@ -170,6 +181,7 @@ let com_parse() : com parser =
       let* _ = char('o') in
       let* _ = char('t') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Not)
    )
    <|>
@@ -178,6 +190,7 @@ let com_parse() : com parser =
       let* _ = char('L') in
       let* _ = char('t') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Lt)
    )
    <|>
@@ -186,6 +199,7 @@ let com_parse() : com parser =
       let* _ = char('G') in
       let* _ = char('t') in
       let* _ = char(';') in
+      let* _ = ws in
       pure(Gt)
    )
    
@@ -215,10 +229,27 @@ match coms_parse()(cs) with
 | Some (e, []) -> Some e
 | _ -> None
 
-let test = parse ("Push False; Push -3;");;
+(*let test = parse ("Push 341;
+Push 439;
+Push -182;
+Push -3;
+Push 0;
+Mul;
+Trace;
+Pop;
+Add;
+Trace;
+Pop;
+Sub;
+Trace;
+Pop;
+Pop;
+Pop;
+Pop;
+Pop;
+Pop;
+");; *)
 (*Some [Push (Bool false); Push (Int 3); Gt]*)
-
-
 let to_int(input: const) : int =
 match input with
 | Int(x) -> x
@@ -248,7 +279,7 @@ let rec big_interp (s: com list) (stack : const list) (trace: string list) : str
       )
       | Sub -> (match stack with
                | [] -> "Panic"::trace
-               | x :: [] -> "Panic"::trace
+               | x :: [] -> "UPanic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
                | x :: y :: _ -> let result = to_int(x)-to_int(y) in big_interp(comtail)(Int(result)::stack)(trace)
       )
@@ -302,4 +333,11 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | None -> None
    | Some (x) -> Some (big_interp(x)([])([]))
 
-let test = interp ("Push 3; Push 5; Lt; Trace;");;
+let test = interp ("Push 341;
+Push 439;
+Push -182;
+Push -3;
+Push 0;
+Mul;
+Trace;
+");;
