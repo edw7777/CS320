@@ -269,60 +269,60 @@ let rec big_interp (s: com list) (stack : const list) (trace: string list) : str
       )
       | Trace -> (match stack with
                | [] -> "Panic"::trace
-               | stacktracehead :: stacktracetail -> big_interp(comtail)(Unit::stack)(toString(stacktracehead)::trace)
+               | stacktracehead :: stacktracetail -> big_interp(comtail)(Unit::stacktracetail)(toString(stacktracehead)::trace)
       )
       | Add -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_int(x)+to_int(y) in big_interp(comtail)(Int(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_int(x)+to_int(y) in big_interp(comtail)(Int(result)::stackrest)(trace)
       )
       | Sub -> (match stack with
                | [] -> "Panic"::trace
-               | x :: [] -> "UPanic"::trace
+               | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_int(x)-to_int(y) in big_interp(comtail)(Int(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_int(x)-to_int(y) in big_interp(comtail)(Int(result)::stackrest)(trace)
       )
       | Mul -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_int(x)*to_int(y) in big_interp(comtail)(Int(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_int(x)*to_int(y) in big_interp(comtail)(Int(result)::stackrest)(trace)
       )
       | Div -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_int(x)/to_int(y) in big_interp(comtail)(Int(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_int(x)/to_int(y) in big_interp(comtail)(Int(result)::stackrest)(trace)
       )
       | And -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_bool x) || not (is_bool y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_bool(x) && to_bool(y) in big_interp(comtail)(Bool(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_bool(x) && to_bool(y) in big_interp(comtail)(Bool(result)::stackrest)(trace)
       )
       | Or -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_bool x) || not (is_bool y) -> "Panic"::trace
-               | x :: y :: _ -> let result = to_bool(x) || to_bool(y) in big_interp(comtail)(Bool(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = to_bool(x) || to_bool(y) in big_interp(comtail)(Bool(result)::stackrest)(trace)
       )
       | Not -> (match stack with
                | [] -> "Panic"::trace
                | x :: _ when not (is_bool x) -> "Panic"::trace
-               | x :: _ -> let result = not(to_bool(x)) in big_interp(comtail)(Bool(result)::stack)(trace)
+               | x :: stackrest -> let result = not(to_bool(x)) in big_interp(comtail)(Bool(result)::stackrest)(trace)
       )
       | Lt -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = (to_int(x)<to_int(y)) in big_interp(comtail)(Bool(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = (to_int(x)<to_int(y)) in big_interp(comtail)(Bool(result)::stackrest)(trace)
       )
       | Gt -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
                | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
-               | x :: y :: _ -> let result = (to_int(x)>to_int(y)) in big_interp(comtail)(Bool(result)::stack)(trace)
+               | x :: y :: stackrest -> let result = (to_int(x)>to_int(y)) in big_interp(comtail)(Bool(result)::stackrest)(trace)
       )
    
    ))
@@ -338,6 +338,9 @@ Push 439;
 Push -182;
 Push -3;
 Push 0;
-Mul;
+Add;
+Trace;
+Pop;
+Add;
 Trace;
 ");;
