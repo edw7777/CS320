@@ -39,8 +39,14 @@ let isEmpty (stack: string) : bool=
 let ws : unit parser =
    (many whitespace) >| () 
 
-let parse_num : int parser= 
-  let* x = natural in let* _ = ws in pure(x)
+let parse_num : int parser=
+(  let* _ = char('-') in
+  let* x = natural in let* _ = ws in pure(-1*x)
+)
+<|>
+(
+   let* x = natural in let* _ = ws in pure(x)
+)
 
 let parse_bool : const parser=
    (let* _ = char('T') in
