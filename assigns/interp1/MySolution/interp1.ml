@@ -285,7 +285,7 @@ let rec big_interp (s: com list) (stack : const list) (trace: string list) : str
       | Div -> (match stack with
                | [] -> "Panic"::trace
                | x :: [] -> "Panic"::trace
-               | x :: y :: _ when not (is_int x) || not (is_int y) -> "Panic"::trace
+               | x :: y :: _ when not (is_int x) || not (is_int y) || to_int y == 0 -> "Panic"::trace
                | x :: y :: stackrest -> let result = to_int(x)/to_int(y) in big_interp(comtail)(Int(result)::stackrest)(trace)
       )
       | And -> (match stack with
@@ -326,7 +326,8 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | None -> None
    | Some (x) -> Some (big_interp(x)([])([]))
 
-let test = interp ("Push Unit;
-Push Unit;
+let test = interp ("Push 0;
+Push 6;
+Div;
 Trace;
 ");;
