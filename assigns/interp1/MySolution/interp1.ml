@@ -207,8 +207,8 @@ let coms_parse() : com list parser = many(com_parse())
 
 let toString(input : const): string =
    match input with
-   | Bool(false) -> "false"
-   | Bool(true) -> "true"
+   | Bool(false) -> "False"
+   | Bool(true) -> "True"
    | Unit -> "Unit"
    | Int(x) -> string_of_int(x)
 
@@ -229,27 +229,16 @@ match coms_parse()(cs) with
 | Some (e, []) -> Some e
 | _ -> None
 
-(*let test = parse ("Push 341;
-Push 439;
-Push -182;
-Push -3;
-Push 0;
-Mul;
+(*let test = parse ("Push True;
+Push True;
+And;
+Push False;
+Or;
+Not;
 Trace;
-Pop;
-Add;
-Trace;
-Pop;
-Sub;
-Trace;
-Pop;
-Pop;
-Pop;
-Pop;
-Pop;
-Pop;
 ");; *)
 (*Some [Push (Bool false); Push (Int 3); Gt]*)
+
 let to_int(input: const) : int =
 match input with
 | Int(x) -> x
@@ -333,14 +322,10 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | None -> None
    | Some (x) -> Some (big_interp(x)([])([]))
 
-let test = interp ("Push 341;
-Push 439;
-Push -182;
-Push -3;
-Push 0;
-Add;
+let test = interp ("Push True;
+Push True;
+And;
 Trace;
-Pop;
-Add;
-Trace;
+
 ");;
+
