@@ -39,6 +39,8 @@ let isEmpty (stack: string) : bool=
 let ws : unit parser =
    (many whitespace) >| () 
 
+let ws1 : unit parser =
+   (many1 whitespace) >| () 
 let parse_num : int parser=
 (  let* _ = char('-') in
   let* x = natural in let* _ = ws in pure(-1*x)
@@ -95,7 +97,7 @@ let com_parse() : com parser =
    let* _ = char('u') in
    let* _ = char('s') in
    let* _ = char('h') in
-   let* _ = char(' ') in
+   let* _ = ws1 in
    let* push = parse_constant() in
    let* _ = char(';') in
    let* _ = ws in
