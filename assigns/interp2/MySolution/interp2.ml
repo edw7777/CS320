@@ -265,6 +265,7 @@ com_parse() : com parser =
       let* _ = char('l') in
       let* _ = char('s') in
       let* _ = char('e') in
+      let* _ = ws in
       let* elsestatement = coms_parse() in
       let* _ = ws in
       let* _ = char('E') in
@@ -346,9 +347,19 @@ match coms_parse()(cs) with
 | _ -> None
 
 (*let test = parse (
-"
-Push 1;
-");; 
+   "
+   Push True;
+   If
+      Push 14;
+      Push 15;
+      Add;
+      Trace;
+   Else
+      Push False;
+      Trace;
+   End;
+   Trace;
+   ");; 
 *)
 
 let is_int(x : const) : bool =
@@ -479,12 +490,11 @@ and
                                     | Bool(false) -> big_interp(stackrest)(trace)(enviroment)(list_append(y)(comtail))
       )
       )
-      (*not confirmed*)
       | Bind -> (match stack with
                | [] -> "Panic"::trace
                | stackhead :: [] -> "Panic"::trace
                | stackhead :: _ when not (is_sym stackhead) -> "Panic"::trace
-               | stackhead :: value :: stackrest when (is_int(value)) || (is_bool(value)) || (is_unit(value)) || (is_sym(value)) -> 
+               | stackhead :: value :: stackrest (*when (is_int(value)) || (is_bool(value)) || (is_unit(value)) || (is_sym(value)) *) -> 
                   big_interp(stackrest)(trace)(((toString stackhead), value) :: enviroment)(comtail)
       )
       | Lookup -> (match stack with 
@@ -511,7 +521,8 @@ and
                | closure :: a :: _ when not(is_closure closure) -> "Panic"::trace
                | Closure(f, vf, c) :: a :: stackrest -> 
                      big_interp(a::stackrest)(trace)(vf)(c)
-)
+      )
+      
    )) 
 
 let interp (s : string) : string list option = (* YOUR CODE *)
@@ -521,9 +532,6 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | Some (x) -> Some (big_interp([])([])([])(x))
 
    let test = interp ("
-   Push x;
-   Fun
-      Push n;
-      Trace;
-   End;
+   Push factorial;
    ");; 
+   
