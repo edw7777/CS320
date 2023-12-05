@@ -346,19 +346,20 @@ match coms_parse()(cs) with
 | Some (e, []) -> Some e
 | _ -> None
 
-(*let test = parse (
+(*let test1 = parse (
    "
-   Push True;
-   If
-      Push 14;
-      Push 15;
-      Add;
-      Trace;
-   Else
-      Push False;
-      Trace;
-   End;
-   Trace;
+   Push 5;
+   Push vai1;
+   Bind;
+   Push 6;
+   Push vai1;
+   Lookup;
+   Swap;
+   Add;
+   Push vai2;
+   Bind;
+   Push vai2;
+   Lookup;
    ");; 
 *)
 
@@ -403,15 +404,7 @@ let to_bool(input: const) : bool =
 match input with
 | Bool(x) -> x
 
-let rec process_enviroment (stackhead) (stackrest) (trace) (enviroment) (comtail) =
-   (match enviroment with
-   | [] -> "Panic"::trace
-   | (symbol, value) :: rest when symbol = toString(stackhead)-> 
-         big_interp(value::stackrest)(trace)((symbol, value) :: rest)(comtail)
-   | _ :: rest_enviroment ->
-      process_enviroment (stackhead) (stackrest) (trace) (rest_enviroment) (comtail))
-and
- big_interp (stack : const list) (trace: string list) (enviroment: (string*const) list) (prog: com list) : string list=
+let rec big_interp (stack : const list) (trace: string list) (enviroment: (string*const) list) (prog: com list) : string list=
    (match prog with
    | [] -> trace
    | comhead :: comtail -> (match comhead with
@@ -500,8 +493,10 @@ and
       | Lookup -> (match stack with 
                | [] -> "Panic"::trace
                | stackhead :: _ when not (is_sym stackhead) -> "Panic"::trace
-               | stackhead :: stackrest -> process_enviroment (stackhead) (stackrest) (trace) (enviroment) (comtail)
-                                          
+               | stackhead :: stackrest -> 
+                  let v = list_foldright(enviroment)(Unit)(fun(sym, value)(res) -> 
+                     if sym = toString(stackhead) then value else res) in 
+                     big_interp(v :: stackrest)(trace)(enviroment)(comtail)               
       )
       | Fun (x)-> (match stack with
                | [] -> "Panic"::trace
@@ -531,7 +526,78 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    | None -> None
    | Some (x) -> Some (big_interp([])([])([])(x))
 
-   let test = interp ("
+ let test = interp ("
    Push factorial;
+   Fun
+      Push n;
+      Bind;
+
+      Push n;
+      Lookup;
+      Push 2;
+      Gt;
+      If
+                  Push 1;
+                  Swap;
+                  Return;
+      Else
+                  Push n;
+                  Lookup;
+                  Push -1;
+                  Add;
+
+                  Push factorial;
+                  Lookup;
+                  Call; 
+
+                  Push n;
+                  Lookup;
+                  Mul;
+
+                  Swap;
+                  Return;
+      End;
+   End;
+
+   Push factorial;
+   Bind;
+
+   Push 4;
+   Push factorial;
+   Lookup;
+
+   Call;
+   Trace;
    ");; 
    
+   (*let test = interp (" 
+   Push poly;
+   Fun
+         Push x;
+         Bind;
+
+         Push x;
+         Lookup;
+         Push x;
+         Lookup;
+         Mul;
+
+         Push -4;
+         Push x;
+         Lookup;
+         Mul;
+
+         Add;
+
+         Push 7;
+         Add;
+
+         Swap;
+         Return;
+   End;
+   Push 3;
+   Swap;
+   Call;
+   Trace;
+   ");;
+*)
