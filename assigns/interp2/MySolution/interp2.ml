@@ -104,9 +104,14 @@ let parse_char() : char parser =
    (let* chara = char('4') in pure(chara))<|>(let* chara = char('5') in pure(chara))<|>(let* chara = char('6') in pure(chara))<|>
    (let* chara = char('7') in pure(chara))<|>(let* chara = char('8') in pure(chara))<|>(let* chara = char('9') in pure(chara))
 
+let concat_helper(index: int) (s1: string) (s2: string): char =
+   if index <= string_length(s1) - 1 then string_get_at(s1) (index) else string_get_at(s2) (index - string_length(s1))
+ 
+ let string_concatenate (s1: string) (s2: string): string =
+   string_init(string_length(s1) + string_length(s2)) (fun i -> concat_helper(i)(s1)(s2))
 let parse_sym() : const parser =
    let* char = many1(parse_char()) in 
-   pure (Sym (list_foldleft(char)("")(fun(res)(element) -> res^str(element))))
+   pure (Sym ( list_foldleft(char)("")(fun(res)(element) -> string_concatenate(res)(str(element)) ) ) )
 
 let parse_constant () : const parser =
    ( let* int = parse_num in
@@ -346,23 +351,49 @@ match coms_parse()(cs) with
 | Some (e, []) -> Some e
 | _ -> None
 
-(*let test1 = parse (
+let test1 = parse (
    "
-   Push 5;
-   Push vai1;
-   Bind;
-   Push 6;
-   Push vai1;
-   Lookup;
-   Swap;
-   Add;
-   Push vai2;
-   Bind;
-   Push vai2;
-   Lookup;
+   Push vsumi2;
+Fun
+  Push vni3;
+  Bind;
+  Push vni3;
+  Lookup;
+  Push 0;
+  Swap;
+  Gt;
+  Not;
+  If
+    Push 0;
+  Else
+    Push vni3;
+    Lookup;
+    Push vsumi2;
+    Lookup;
+    Push vni3;
+    Lookup;
+    Push 1;
+    Swap;
+    Sub;
+    Swap;
+    Call;
+    Swap;
+    Add;
+  End;
+  Swap;
+  Return;
+End;
+Push vsumi1;
+Bind;
+Push vsumi1;
+Lookup;
+Push 10;
+Swap;
+Call;
+Trace;
    ");; 
-*)
 
+(*
 let is_int(x : const) : bool =
 match x with
    | Int (x) -> true
@@ -600,4 +631,6 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    Call;
    Trace;
    ");;
+*)
+
 *)
