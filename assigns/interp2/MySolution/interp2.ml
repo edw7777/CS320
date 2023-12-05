@@ -393,7 +393,7 @@ Call;
 Trace;
    ");; 
 
-(*
+
 let is_int(x : const) : bool =
 match x with
    | Int (x) -> true
@@ -633,4 +633,3 @@ let interp (s : string) : string list option = (* YOUR CODE *)
    ");;
 *)
 
-*)
