@@ -342,53 +342,48 @@ match input with
 | Int(x) -> string_of_int(x)
 | Var(x) -> x
 
-let rec big_compile(state: expr) (needlookup: bool): string =
+let rec big_compile(state: expr): string =
 (match state with
 | Int(x)-> "Push " ^ string_of_int(x) ^ "; "
 | Bool (x) -> "Push " ^ string_of_bool(x) ^ "; "
 | Unit -> "Push Unit;"
-| Var(x) -> if needlookup = true then "Push " ^ x ^"; Lookup;" else "Push " ^ x ^"; "
-
+| Var(x) -> "Push " ^ x ^"; Lookup;" 
 | UOpr(x, y) -> (match x with
                 | Not -> (match y with 
-                        | _ -> big_compile(y)(needlookup) ^ " Not;"
+                        | _ -> big_compile(y) ^ " Not;"
                 )
                 | Neg -> (match y with 
-                        | _ -> "-" ^ big_compile(y)(needlookup)
+                        | _ -> "-" ^ big_compile(y)
                 )
 )
 | BOpr(x, y, z) -> 
 (match x with 
-  | Add -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Add;"     
-  | Sub -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Sub;"
-  | Mul -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Mul;"
-  | Div -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Div;"
-  | Mod -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Div;" ^ big_compile(z)(needlookup) ^ "Mul;" ^ big_compile(y)(needlookup) ^ "Swap; Sub;"
-  | And -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "And;"
-  | Or -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Or;"
-  | Lt -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt; "
-  | Gt -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; "
-  | Lte -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt; " ^ 
-            big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not; " ^
-            "Or;"
-  | Gte -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ 
-            big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not; " ^
-            "Or;"
-  | Eq -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
+  | Add -> big_compile(y) ^ big_compile(z) ^ "Add;"     
+  | Sub -> big_compile(y) ^ big_compile(z) ^ "Swap; Sub;"
+  | Mul -> big_compile(y) ^ big_compile(z) ^ "Mul;"
+  | Div -> big_compile(y) ^ big_compile(z) ^ "Swap; Div;"
+  | Mod -> big_compile(y) ^ big_compile(z) ^ "Swap; Div;" ^ big_compile(z) ^ "Mul;" ^ big_compile(y) ^ "Swap; Sub;"
+  | And -> big_compile(y) ^ big_compile(z) ^ "And;"
+  | Or -> big_compile(y) ^ big_compile(z) ^ "Or;"
+  | Lt -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt; "
+  | Gt -> big_compile(y) ^ big_compile(z) ^ "Swap; Gt; "
+  | Lte -> big_compile(y) ^ big_compile(z) ^ "Swap; Gt; Not;"
+  | Gte -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt; Not;"
+  | Eq -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt;" ^ big_compile(y) ^ big_compile(z) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
 )
-| Let(str, expr1, expr2) -> big_compile(Var(str))(needlookup) ^ big_compile(expr1)(needlookup) ^ "Bind; " ^ big_compile(expr2)(true)
-(*| Fun(str1, str2, expr) -> big_compile(Var(str1)) ^ big_compile (Var(str2)) ^ "Fun" ^ big_compile(expr) ^ "End;" *)
-| Ifte(expr1, expr2, expr3) -> big_compile(expr1)(needlookup) ^ "If " ^ big_compile(expr2)(needlookup) ^ "Else " ^ big_compile(expr3)(needlookup) ^ "End;"
-| Seq(expr1, expr2) -> big_compile(expr1)(needlookup) ^ big_compile(expr2)(needlookup)
-| Trace(expr) -> big_compile(expr)(needlookup) ^ " Trace;"
+| Let(str, expr1, expr2) -> big_compile(Var(str)) ^ big_compile(expr1) ^ "Bind; " ^ big_compile(expr2)
+| App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Call;"
+| Fun(str1, str2, expr) -> "Fun " ^ big_compile(expr) ^ "End; "
+| Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
+| Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
+| Trace(expr) -> big_compile(expr) ^ " Trace;"
 )
 
 
 let compile (s : string) : string = (* YOUR CODE *)
   let parsed = parse_prog(s) in
-  big_compile(parsed)(false)
+  big_compile(parsed)
 
-let test = parse_prog("let rec fact x = if x <= 0 then 1 else x*fact(x-1) in (fact 10)")
-
-(*Seq (UOpr (Not, Bool true), Trace (Bool true))*)
-let test1 = compile("let x = 1 in trace x");;
+(*let test = parse_prog("let rec fact x = if x <= 0 then 1 else x*fact(x-1) in (fact 10)")*)
+let test = parse_prog("let rec fact x = if x = 5 then x else fact x+1 in fact(0)")
+let test1 = compile("let func x = x+1 in func(0)");;
