@@ -322,10 +322,73 @@ let scope_expr (m : expr) : expr =
 (* ------------------------------------------------------------ *)
 
 (* parser for the high-level language *)
+let get_num (input:expr) : int =
+match input with 
+  Int(x) -> x
 
 let parse_prog (s : string) : expr =
   match string_parse (whitespaces >> parse_expr ()) s with
   | Some (m, []) -> scope_expr m
   | _ -> raise SyntaxError
 
+let test = parse_prog("not true; trace true");;
+
+let toString(input : expr) : string =
+match input with 
+| Bool(false) -> "False"
+| Bool(true) -> "True"
+| Unit -> "Unit"
+(* need to change this at the end*)
+| Int(x) -> string_of_int(x)
+| Var(x) -> x
+
+let rec big_compile(state: expr) (needlookup: bool): string =
+(match state with
+| Int(x)-> "Push " ^ string_of_int(x) ^ "; "
+| Bool (x) -> "Push " ^ string_of_bool(x) ^ "; "
+| Unit -> "Push Unit;"
+| Var(x) -> if needlookup = true then "Push " ^ x ^"; Lookup;" else "Push " ^ x ^"; "
+
+| UOpr(x, y) -> (match x with
+                | Not -> (match y with 
+                        | _ -> big_compile(y)(needlookup) ^ " Not;"
+                )
+                | Neg -> (match y with 
+                        | _ -> "-" ^ big_compile(y)(needlookup)
+                )
+)
+| BOpr(x, y, z) -> 
+(match x with 
+  | Add -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Add;"     
+  | Sub -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Sub;"
+  | Mul -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Mul;"
+  | Div -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Div;"
+  | Mod -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Div;" ^ big_compile(z)(needlookup) ^ "Mul;" ^ big_compile(y)(needlookup) ^ "Swap; Sub;"
+  | And -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "And;"
+  | Or -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Or;"
+  | Lt -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt; "
+  | Gt -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; "
+  | Lte -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt; " ^ 
+            big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not; " ^
+            "Or;"
+  | Gte -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ 
+            big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not; " ^
+            "Or;"
+  | Eq -> big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Lt;" ^ big_compile(y)(needlookup) ^ big_compile(z)(needlookup) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
+)
+| Let(str, expr1, expr2) -> big_compile(Var(str))(needlookup) ^ big_compile(expr1)(needlookup) ^ "Bind; " ^ big_compile(expr2)(true)
+(*| Fun(str1, str2, expr) -> big_compile(Var(str1)) ^ big_compile (Var(str2)) ^ "Fun" ^ big_compile(expr) ^ "End;" *)
+| Ifte(expr1, expr2, expr3) -> big_compile(expr1)(needlookup) ^ "If " ^ big_compile(expr2)(needlookup) ^ "Else " ^ big_compile(expr3)(needlookup) ^ "End;"
+| Seq(expr1, expr2) -> big_compile(expr1)(needlookup) ^ big_compile(expr2)(needlookup)
+| Trace(expr) -> big_compile(expr)(needlookup) ^ " Trace;"
+)
+
+
 let compile (s : string) : string = (* YOUR CODE *)
+  let parsed = parse_prog(s) in
+  big_compile(parsed)(false)
+
+let test = parse_prog("let rec fact x = if x <= 0 then 1 else x*fact(x-1) in (fact 10)")
+
+(*Seq (UOpr (Not, Bool true), Trace (Bool true))*)
+let test1 = compile("let x = 1 in trace x");;
