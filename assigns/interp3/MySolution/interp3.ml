@@ -372,8 +372,8 @@ let rec big_compile(state: expr): string =
   | Eq -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt;" ^ big_compile(y) ^ big_compile(z) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
 )
 | Let(str, expr1, expr2) -> big_compile(Var(str)) ^ big_compile(expr1) ^ "Bind; " ^ big_compile(expr2)
-| App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Call;"
-| Fun(str1, str2, expr) -> "Fun " ^ big_compile(expr) ^ "End; "
+| App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Lookup; Call;"
+| Fun(str1, str2, expr) -> "Fun " ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
 | Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
 | Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
 | Trace(expr) -> big_compile(expr) ^ " Trace;"
