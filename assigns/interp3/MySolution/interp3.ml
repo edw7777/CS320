@@ -344,16 +344,16 @@ match input with
 
 let rec big_compile(state: expr): string =
 (match state with
-| Int(x)-> "Push " ^ string_of_int(x) ^ "; "
+| Int(x)->  "Push " ^ string_of_int(x) ^ "; "
 | Bool (x) -> "Push " ^ string_of_bool(x) ^ "; "
 | Unit -> "Push Unit;"
 | Var(x) -> "Push " ^ x ^"; Lookup;" 
 | UOpr(x, y) -> (match x with
                 | Not -> (match y with 
-                        | _ -> big_compile(y) ^ " Not;"
+                        | _ -> big_compile(y) ^ " Not; "
                 )
                 | Neg -> (match y with 
-                        | _ -> "-" ^ big_compile(y)
+                        | _ -> big_compile(Int(-1)) ^ big_compile(y) ^ " Mul; ";
                 )
 )
 | BOpr(x, y, z) -> 
@@ -371,9 +371,9 @@ let rec big_compile(state: expr): string =
   | Gte -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt; Not;"
   | Eq -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt;" ^ big_compile(y) ^ big_compile(z) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
 )
-| Let(str, expr1, expr2) -> big_compile(Var(str)) ^ big_compile(expr1) ^ "Bind; " ^ big_compile(expr2)
-| App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Lookup; Call;"
-| Fun(str1, str2, expr) -> "Fun " ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
+| Let(str, expr1, expr2) -> "Push " ^ str ^ "; " ^ big_compile(expr1) ^ "Bind; " ^ big_compile(expr2)
+| App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Call;"
+| Fun(str1, str2, expr) -> "Fun " ^ "Push " ^ str2 ^ "; Bind;" ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
 | Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
 | Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
 | Trace(expr) -> big_compile(expr) ^ " Trace;"
@@ -385,5 +385,5 @@ let compile (s : string) : string = (* YOUR CODE *)
   big_compile(parsed)
 
 (*let test = parse_prog("let rec fact x = if x <= 0 then 1 else x*fact(x-1) in (fact 10)")*)
-let test = parse_prog("let rec fact x = if x = 5 then x else fact x+1 in fact(0)")
-let test1 = compile("let func x = x+1 in func(0)");;
+let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)")
+let test1 = compile("let poly x = x*x -4 * x + 7 in poly(4)") ;;
