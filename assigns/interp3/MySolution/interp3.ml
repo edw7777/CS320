@@ -373,7 +373,7 @@ let rec big_compile(state: expr): string =
 )
 | Let(str, expr1, expr2) -> "Push " ^ str ^ "; " ^ big_compile(expr1) ^ "Bind; " ^ big_compile(expr2)
 | App(str, expr) -> big_compile(expr) ^ big_compile(str) ^ "Call;"
-| Fun(str1, str2, expr) -> "Fun " ^ "Push " ^ str2 ^ "; Bind;" ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
+| Fun(str1, str2, expr) -> "Push" ^ str1 ^ "Fun " ^ "Push " ^ str2 ^ "; Bind;" ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
 | Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
 | Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
 | Trace(expr) -> big_compile(expr) ^ " Trace;"
@@ -385,5 +385,7 @@ let compile (s : string) : string = (* YOUR CODE *)
   big_compile(parsed)
 
 (*let test = parse_prog("let rec fact x = if x <= 0 then 1 else x*fact(x-1) in (fact 10)")*)
-let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)")
-let test1 = compile("let poly x = x*x -4 * x + 7 in poly(4)") ;;
+(*let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)") *)
+(*let test1 = parse_prog("let rec factorial x = if 2>x then -1 else factorial(x-1)*x in factorial(10) ") ;;*)
+
+let test1 = compile("let rec fact x = if x = 10 then 1 else x+(fact(x+1)) in fact(0)") ;;
