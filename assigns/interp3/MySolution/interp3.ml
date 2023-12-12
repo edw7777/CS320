@@ -331,7 +331,8 @@ let parse_prog (s : string) : expr =
   | Some (m, []) -> scope_expr m
   | _ -> raise SyntaxError
 
-let test = parse_prog("not true; trace true");;
+let string_concat (input: string list) : string = 
+  list_foldright(input)("")(fun(element)(res) -> string_append(element)(res))
 
 let toString(input : expr) : string =
 match input with 
@@ -339,44 +340,44 @@ match input with
 | Bool(true) -> "True"
 | Unit -> "Unit"
 (* need to change this at the end*)
-| Int(x) -> string_of_int(x)
+| Int(x) -> toString(x)
 | Var(x) -> x
 
 let rec big_compile(state: expr): string =
 (match state with
-| Int(x)->  "Push " ^ string_of_int(x) ^ "; "
-| Bool (x) -> "Push " ^ string_of_bool(x) ^ "; "
+| Int(x)-> string_concat["Push " ; toString(x) ; "; "]
+| Bool (x) -> string_concat["Push " ; toString(x) ; "; "]
 | Unit -> "Push Unit;"
-| Var(x) -> "Push " ^ x ^"; Lookup;" 
+| Var(x) -> string_concat["Push " ; x ; "; Lookup;" ]
 | UOpr(x, y) -> (match x with
                 | Not -> (match y with 
-                        | _ -> big_compile(y) ^ " Not; "
+                        | _ -> string_concat[big_compile(y) ; " Not; "]
                 )
                 | Neg -> (match y with 
-                        | _ -> big_compile(Int(-1)) ^ big_compile(y) ^ " Mul; ";
+                        | _ -> string_concat[big_compile(Int(-1)) ; big_compile(y) ; " Mul; "]
                 )
 )
 | BOpr(x, y, z) -> 
 (match x with 
-  | Add -> big_compile(y) ^ big_compile(z) ^ "Add;"     
-  | Sub -> big_compile(y) ^ big_compile(z) ^ "Swap; Sub;"
-  | Mul -> big_compile(y) ^ big_compile(z) ^ "Mul;"
-  | Div -> big_compile(y) ^ big_compile(z) ^ "Swap; Div;"
-  | Mod -> big_compile(y) ^ big_compile(z) ^ "Swap; Div;" ^ big_compile(z) ^ "Mul;" ^ big_compile(y) ^ "Swap; Sub;"
-  | And -> big_compile(y) ^ big_compile(z) ^ "And;"
-  | Or -> big_compile(y) ^ big_compile(z) ^ "Or;"
-  | Lt -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt; "
-  | Gt -> big_compile(y) ^ big_compile(z) ^ "Swap; Gt; "
-  | Lte -> big_compile(y) ^ big_compile(z) ^ "Swap; Gt; Not;"
-  | Gte -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt; Not;"
-  | Eq -> big_compile(y) ^ big_compile(z) ^ "Swap; Lt;" ^ big_compile(y) ^ big_compile(z) ^ "Swap; Gt; " ^ "Or; " ^ "Not;"
+  | Add -> string_concat[big_compile(y) ; big_compile(z) ; "Add;"]     
+  | Sub -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Sub;"]
+  | Mul -> string_concat[big_compile(y) ; big_compile(z) ; "Mul;"]
+  | Div -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Div;"]
+  | Mod -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Div;" ; big_compile(z) ; "Mul;" ; big_compile(y) ; "Swap; Sub;"]
+  | And -> string_concat[big_compile(y) ; big_compile(z) ; "And;"]
+  | Or -> string_concat[big_compile(y) ; big_compile(z) ; "Or;"]
+  | Lt -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Lt; "]
+  | Gt -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Gt; "]
+  | Lte -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Gt; Not;"]
+  | Gte -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Lt; Not;"]
+  | Eq -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Lt;" ; big_compile(y) ; big_compile(z) ; "Swap; Gt; " ; "Or; " ; "Not;"]
 )
-| Let(str, expr1, expr2) -> (*"Push " ^ str ^ "; " ^*) big_compile(expr1) ^ "Push " ^ str ^ "; " (*^ "Swap; "*) ^ "Bind; " ^ big_compile(expr2)
-| App(expr1, expr2) -> big_compile(expr2) ^ big_compile(expr1) ^ "Call;"
-| Fun(str1, str2, expr) -> "Push" ^ str1  ^ ";" ^ "Fun " ^ "Push " ^ str2 ^ "; Bind; " ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
-| Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
-| Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
-| Trace(expr) -> big_compile(expr) ^ " Trace;"
+| Let(str, expr1, expr2) -> (*"Push " ^ str ^ "; " ^*) string_concat[big_compile(expr1) ; "Push " ; str ; "; " (*^ "Swap; "*) ; "Bind; " ; big_compile(expr2)]
+| App(expr1, expr2) -> string_concat[big_compile(expr2) ; big_compile(expr1) ; "Call;"]
+| Fun(str1, str2, expr) -> string_concat["Push" ; str1  ; ";" ; "Fun " ; "Push " ; str2 ; "; Bind; " ; big_compile(expr) ; "Swap; Return; " ; "End; "]
+| Ifte(expr1, expr2, expr3) -> string_concat[big_compile(expr1) ; "If " ; big_compile(expr2) ; "Else " ; big_compile(expr3) ; "End; "]
+| Seq(expr1, expr2) -> string_concat[big_compile(expr1) ; "Pop; " ; big_compile(expr2)]
+| Trace(expr) -> string_concat[big_compile(expr) ; " Trace;"]
 )
 
 
@@ -388,4 +389,6 @@ let compile (s : string) : string = (* YOUR CODE *)
 (*let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)") *)
 (*let test1 = parse_prog("let rec factorial x = if 2>x then -1 else factorial(x-1)*x in factorial(10) ") ;;*)
 (*let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)")*)
-let test1 = compile("let foo x = x + 1 in foo 2") ;;
+let test = compile("-3+1");;
+let parse = parse_prog("let foo x = if x = 2 then -x + 1 else x in foo 2")
+let test1 = compile("let foo x = if x = 2 then -x + 1 else x in foo 2") ;;
