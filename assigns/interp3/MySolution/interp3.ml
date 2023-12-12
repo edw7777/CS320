@@ -373,7 +373,7 @@ let rec big_compile(state: expr): string =
 )
 | Let(str, expr1, expr2) -> "Push " ^ str ^ "; " ^ big_compile(expr1) ^ "Push " ^ str ^ "; " (*^ "Swap; "*) ^ "Bind; " ^ big_compile(expr2)
 | App(expr1, expr2) -> big_compile(expr2) ^ big_compile(expr1) (*^ "Lookup; "*) ^ "Call;"
-| Fun(str1, str2, expr) -> (*"Push" ^ str1  ^ ";" ^ *)"Fun " ^ "Push " ^ str2 ^ "; Bind; " ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
+| Fun(str1, str2, expr) -> "Push" ^ str1  ^ ";" ^ "Fun " ^ "Push " ^ str2 ^ "; Bind; " ^ big_compile(expr) ^ "Swap; Return; " ^ "End; "
 | Ifte(expr1, expr2, expr3) -> big_compile(expr1) ^ "If " ^ big_compile(expr2) ^ "Else " ^ big_compile(expr3) ^ "End; "
 | Seq(expr1, expr2) -> big_compile(expr1) ^ "Pop; " ^ big_compile(expr2)
 | Trace(expr) -> big_compile(expr) ^ " Trace;"
