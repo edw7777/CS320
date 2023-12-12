@@ -1,0 +1,423 @@
+OCaml version 5.0.0
+Enter #help;; for help.
+
+# exception False
+exception Subscript
+val chr : int -> char = <fun>
+val ord : char -> int = <fun>
+val str : char -> string = <fun>
+val char_islower : char -> bool = <fun>
+val char_isupper : char -> bool = <fun>
+val char_isdigit : char -> bool = <fun>
+val char_isletter : char -> bool = <fun>
+val char_isalphanum : char -> bool = <fun>
+val char_iswhitespace : char -> bool = <fun>
+val char_tolower : char -> char = <fun>
+val char_toupper : char -> char = <fun>
+val char_of_digit : int -> char = <fun>
+val digit_of_char : char -> int = <fun>
+type ('xs, 'x0) forall = 'xs -> ('x0 -> bool) -> bool
+type ('xs, 'x0) foreach = 'xs -> ('x0 -> unit) -> unit
+type ('xs, 'x0) rforeach = 'xs -> ('x0 -> unit) -> unit
+type ('xs, 'x0) listize = 'xs -> 'x0 list
+type ('xs, 'x0) arrnize = 'xs -> 'x0 array
+type ('xs, 'x0) rlistize = 'xs -> 'x0 list
+type ('xs, 'x0) rarrnize = 'xs -> 'x0 array
+type ('xs, 'x0, 'y0) map_list = 'xs -> ('x0 -> 'y0) -> 'y0 list
+type ('xs, 'x0, 'y0) map_rlist = 'xs -> ('x0 -> 'y0) -> 'y0 list
+type ('xs, 'x0, 'r0) foldleft = 'xs -> 'r0 -> ('r0 -> 'x0 -> 'r0) -> 'r0
+type ('xs, 'x0, 'r0) foldright = 'xs -> 'r0 -> ('x0 -> 'r0 -> 'r0) -> 'r0
+val int1_foreach : int -> (int -> unit) -> unit = <fun>
+val int1_rforeach : int -> (int -> unit) -> unit = <fun>
+val string_init : int -> (int -> char) -> string = <fun>
+val string_length : string -> int = <fun>
+val string_of_file : string -> string = <fun>
+val string_get_at : string -> int -> char = <fun>
+val string_head : string -> char = <fun>
+val string_tail : string -> string = <fun>
+val string_cons : char -> string -> string = <fun>
+val string_snoc : string -> char -> string = <fun>
+val string_toupper : string -> string = <fun>
+val string_tolower : string -> string = <fun>
+val string_foreach : string -> (char -> unit) -> unit = <fun>
+val string_rforeach : string -> (char -> unit) -> unit = <fun>
+val string_tabulate : int -> (int -> char) -> string = <fun>
+val list_arrnize : 'a list -> 'a array = <fun>
+val list_revapp : 'a list -> 'a list -> 'a list = <fun>
+val list_reverse : 'a list -> 'a list = <fun>
+val list_forall : 'a list -> ('a -> bool) -> bool = <fun>
+val list_exists : 'a list -> ('a -> bool) -> bool = <fun>
+val list_foreach : 'a list -> ('a -> unit) -> unit = <fun>
+val list_rforeach : 'a list -> ('a -> unit) -> unit = <fun>
+val forall_to_foreach : ('xs, 'x0) forall -> ('xs, 'x0) foreach = <fun>
+val foreach_to_forall : ('xs, 'x0) foreach -> ('xs, 'x0) forall = <fun>
+val foreach_to_foldleft :
+  ('xs, 'x0) foreach -> 'xs -> 'r0 -> ('r0 -> 'x0 -> 'r0) -> 'r0 = <fun>
+val foreach_to_map_list : ('xs, 'x0) foreach -> ('xs, 'x0, 'y0) map_list =
+  <fun>
+val foreach_to_map_rlist : ('xs, 'x0) foreach -> ('xs, 'x0, 'y0) map_rlist =
+  <fun>
+val foreach_to_listize : ('xs, 'x0) foreach -> ('xs, 'x0) listize = <fun>
+val foreach_to_rlistize : ('xs, 'x0) foreach -> ('xs, 'x0) rlistize = <fun>
+val foreach_to_arrnize : ('xs, 'x0) foreach -> ('xs, 'x0) arrnize = <fun>
+val foreach_to_rarrnize : ('xs, 'x0) foreach -> ('xs, 'x0) rarrnize = <fun>
+val foreach_to_length : ('xs, 'x0) foreach -> 'xs -> int = <fun>
+val foldleft_to_length : ('xs, 'x0, int) foldleft -> 'xs -> int = <fun>
+val rforeach_to_foldright : ('xs, 'x0) rforeach -> ('xs, 'x0, 'r0) foldright =
+  <fun>
+val int1_forall : int -> (int -> bool) -> bool = <fun>
+val string_forall : string -> (char -> bool) -> bool = <fun>
+val int1_listize : int -> int list = <fun>
+val int1_rlistize : int -> int list = <fun>
+val string_listize : string -> char list = <fun>
+val string_rlistize : string -> char list = <fun>
+val int1_foldleft : int -> 'a -> ('a -> int -> 'a) -> 'a = <fun>
+val list_foldleft : 'a list -> 'b -> ('b -> 'a -> 'b) -> 'b = <fun>
+val string_foldleft : string -> 'a -> ('a -> char -> 'a) -> 'a = <fun>
+val int1_foldright : int -> 'a -> (int -> 'a -> 'a) -> 'a = <fun>
+val list_foldright : 'a list -> 'b -> ('a -> 'b -> 'b) -> 'b = <fun>
+val string_foldright : string -> 'a -> (char -> 'a -> 'a) -> 'a = <fun>
+val list_make_fwork : (('x0 -> unit) -> unit) -> 'x0 list = <fun>
+val list_make_filter : ('x0 -> bool) -> (('x0 -> unit) -> unit) -> 'x0 list =
+  <fun>
+val list_rmake_fwork : (('x0 -> unit) -> unit) -> 'x0 list = <fun>
+val list_rmake_filter : ('x0 -> bool) -> (('x0 -> unit) -> unit) -> 'x0 list =
+  <fun>
+val string_make_fwork : ((char -> unit) -> unit) -> string = <fun>
+val string_rmake_fwork : ((char -> unit) -> unit) -> string = <fun>
+val list_append : 'a list -> 'a list -> 'a list = <fun>
+val list_concat : 'a list list -> 'a list = <fun>
+val string_filter : string -> (char -> bool) -> string = <fun>
+val string_append : string -> string -> string = <fun>
+val string_concat_list : string list -> string = <fun>
+type 'a strcon = StrNil | StrCons of 'a * (unit -> 'a strcon)
+type 'a stream = unit -> 'a strcon
+val stream_map : 'a stream -> ('a -> 'b) -> 'b stream = <fun>
+val stream_foreach : 'a stream -> ('a -> unit) -> unit = <fun>
+val int1_map_stream : int -> (int -> 'a) -> 'a stream = <fun>
+val stream_append : 'a stream -> 'a stream -> 'a stream = <fun>
+val stream_concat_list : 'a stream list -> 'a stream = <fun>
+val option_foreach : 'a option -> ('a -> unit) -> unit = <fun>
+val option_forall : 'a option -> ('a -> bool) -> bool = <fun>
+val option_foldleft : 'a option -> 'r0 -> ('r0 -> 'a -> 'r0) -> 'r0 = <fun>
+val option_listize : 'x0 option -> 'x0 list = <fun>
+val option_map : 'a option -> ('a -> 'b) -> 'b option = <fun>
+val option_bind : 'a option -> ('a -> 'b option) -> 'b option = <fun>
+val option_cond : bool -> (unit -> 'a) -> 'a option = <fun>
+val ( let@ ) : 'a option -> ('a -> 'b option) -> 'b option = <fun>
+type 'a parser = char list -> ('a * char list) option
+val string_parse : 'a parser -> string -> ('a * char list) option = <fun>
+val pure : 'a -> 'b -> ('a * 'b) option = <fun>
+val fail : 'a parser = <fun>
+val bind :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val read : char parser = <fun>
+val satisfy : (char -> bool) -> char list -> (char * char list) option =
+  <fun>
+val char : char -> char list -> (char * char list) option = <fun>
+val seqright : 'a parser -> 'b parser -> char list -> ('b * char list) option =
+  <fun>
+val seqleft : 'a parser -> 'b parser -> char list -> ('a * char list) option =
+  <fun>
+val disj : 'a parser -> 'a parser -> char list -> ('a * char list) option =
+  <fun>
+val map : 'a parser -> ('a -> 'b) -> char list -> ('b * char list) option =
+  <fun>
+val many : 'a parser -> char list -> ('a list * char list) option = <fun>
+val many1 : 'a parser -> char list -> ('a list * char list) option = <fun>
+val many' : (unit -> 'a parser) -> char list -> ('a list * char list) option =
+  <fun>
+val many1' : (unit -> 'a parser) -> char list -> ('a list * char list) option =
+  <fun>
+val whitespace : char list -> (unit * char list) option = <fun>
+val digit : char list -> (char * char list) option = <fun>
+val natural : int parser = <fun>
+val literal : string -> char list -> (unit * char list) option = <fun>
+val ( >>= ) :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val ( let* ) :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val ( >> ) : 'a parser -> 'b parser -> char list -> ('b * char list) option =
+  <fun>
+val ( << ) : 'a parser -> 'b parser -> char list -> ('a * char list) option =
+  <fun>
+val ( <|> ) : 'a parser -> 'a parser -> char list -> ('a * char list) option =
+  <fun>
+val ( >|= ) : 'a parser -> ('a -> 'b) -> char list -> ('b * char list) option =
+  <fun>
+val ( >| ) : 'a parser -> 'b -> char list -> ('b * char list) option = <fun>
+val whitespaces : char list -> (unit * char list) option = <fun>
+val whitespaces1 : char list -> (unit * char list) option = <fun>
+val keyword : string -> char list -> (unit * char list) option = <fun>
+#   * * * * * * * * * *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     [1mLines 325-326, characters 0-13[0m:
+325 | match input with 
+326 |   Int(x) -> x
+[1;35mWarning[0m 8 [partial-match]: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(Unit|Bool _|UOpr (_, _)|BOpr (_, _, _)|Var _|Fun (_, _, _)|App (_, _)|
+Let (_, _, _)|Seq (_, _)|Ifte (_, _, _)|Trace _)
+[1mLines 345-351, characters 0-13[0m:
+345 | match input with 
+346 | | Bool(false) -> "False"
+347 | | Bool(true) -> "True"
+348 | | Unit -> "Unit"
+349 | (* need to change this at the end*)
+350 | | Int(x) -> int2str(x)
+351 | | Var(x) -> x
+[1;35mWarning[0m 8 [partial-match]: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(UOpr (_, _)|BOpr (_, _, _)|Fun (_, _, _)|App (_, _)|Let (_, _, _)|
+Seq (_, _)|Ifte (_, _, _)|Trace _)
+type uopr = Neg | Not
+type bopr = Add | Sub | Mul | Div | Mod | And | Or | Lt | Gt | Lte | Gte | Eq
+type expr =
+    Int of int
+  | Bool of bool
+  | Unit
+  | UOpr of uopr * expr
+  | BOpr of bopr * expr * expr
+  | Var of string
+  | Fun of string * string * expr
+  | App of expr * expr
+  | Let of string * expr * expr
+  | Seq of expr * expr
+  | Ifte of expr * expr * expr
+  | Trace of expr
+val chain_left : 'a parser -> ('a -> 'a -> 'a) parser -> 'a parser = <fun>
+val chain_right : 'a parser -> ('a -> 'a -> 'a) parser -> 'a parser = <fun>
+val opt : 'a parser -> 'a option parser = <fun>
+val parse_int : expr parser = <fun>
+val parse_bool : expr parser = <fun>
+val parse_unit : expr parser = <fun>
+val isReserved : string -> bool = <fun>
+val parse_name : string parser = <fun>
+val parse_neg : (expr -> expr) parser = <fun>
+val parse_add : (expr -> expr -> expr) parser = <fun>
+val parse_sub : (expr -> expr -> expr) parser = <fun>
+val parse_mul : (expr -> expr -> expr) parser = <fun>
+val parse_div : (expr -> expr -> expr) parser = <fun>
+val parse_mod : (expr -> expr -> expr) parser = <fun>
+val parse_and : (expr -> expr -> expr) parser = <fun>
+val parse_or : (expr -> expr -> expr) parser = <fun>
+val parse_lt : (expr -> expr -> expr) parser = <fun>
+val parse_gt : (expr -> expr -> expr) parser = <fun>
+val parse_lte : (expr -> expr -> expr) parser = <fun>
+val parse_gte : (expr -> expr -> expr) parser = <fun>
+val parse_eq : (expr -> expr -> expr) parser = <fun>
+val parse_neq : (expr -> expr -> expr) parser = <fun>
+val parse_seq : (expr -> expr -> expr) parser = <fun>
+val parse_expr : unit -> expr parser = <fun>
+val parse_expr1 : unit -> expr parser = <fun>
+val parse_expr2 : unit -> expr parser = <fun>
+val parse_expr3 : unit -> expr parser = <fun>
+val parse_expr4 : unit -> expr parser = <fun>
+val parse_expr5 : unit -> expr parser = <fun>
+val parse_expr6 : unit -> expr parser = <fun>
+val parse_expr7 : unit -> expr parser = <fun>
+val parse_expr8 : unit -> expr parser = <fun>
+val parse_expr9 : unit -> expr parser = <fun>
+val parse_var : unit -> expr parser = <fun>
+val parse_fun : unit -> expr parser = <fun>
+val parse_let : unit -> expr parser = <fun>
+val parse_letrec : unit -> expr parser = <fun>
+val parse_ifte : unit -> expr parser = <fun>
+val parse_trace : unit -> expr parser = <fun>
+val parse_not : unit -> expr parser = <fun>
+exception SyntaxError
+exception UnboundVariable of string
+type scope = (string * string) list
+val new_var : string -> string = <fun>
+val find_var : ('a * 'b) list -> 'a -> 'b option = <fun>
+val scope_expr : expr -> expr = <fun>
+val get_num : expr -> int = <fun>
+val parse_prog : string -> expr = <fun>
+val string_concat : string list -> string = <fun>
+val helper : int -> string = <fun>
+val int2str : int -> string = <fun>
+val toString : expr -> string = <fun>
+val big_compile : expr -> string = <fun>
+val compile : string -> string = <fun>
+val test1 : string =
+  "Pushvi2;Fun Push vxi3; Bind; Push vxi3; Lookup;Swap; Return; End; Push vii1; Bind; Pushvi5;Fun Push vxi6; Bind; Pushvi7;Fun Push vyi8; Bind; Push vxi6; Lookup;Swap; Return; End; Swap; Return; End; Push vki4; Bind; Pushvi10;Fun Push vxi11; Bind; Pushvi12;Fun Push vyi13; Bind; Push vyi13; Lookup;Swap"... (* string length 837; truncated *)
+# 
+OCaml version 5.0.0
+Enter #help;; for help.
+
+# exception False
+exception Subscript
+val chr : int -> char = <fun>
+val ord : char -> int = <fun>
+val str : char -> string = <fun>
+val char_islower : char -> bool = <fun>
+val char_isupper : char -> bool = <fun>
+val char_isdigit : char -> bool = <fun>
+val char_isletter : char -> bool = <fun>
+val char_isalphanum : char -> bool = <fun>
+val char_iswhitespace : char -> bool = <fun>
+val char_tolower : char -> char = <fun>
+val char_toupper : char -> char = <fun>
+val char_of_digit : int -> char = <fun>
+val digit_of_char : char -> int = <fun>
+type ('xs, 'x0) forall = 'xs -> ('x0 -> bool) -> bool
+type ('xs, 'x0) foreach = 'xs -> ('x0 -> unit) -> unit
+type ('xs, 'x0) rforeach = 'xs -> ('x0 -> unit) -> unit
+type ('xs, 'x0) listize = 'xs -> 'x0 list
+type ('xs, 'x0) arrnize = 'xs -> 'x0 array
+type ('xs, 'x0) rlistize = 'xs -> 'x0 list
+type ('xs, 'x0) rarrnize = 'xs -> 'x0 array
+type ('xs, 'x0, 'y0) map_list = 'xs -> ('x0 -> 'y0) -> 'y0 list
+type ('xs, 'x0, 'y0) map_rlist = 'xs -> ('x0 -> 'y0) -> 'y0 list
+type ('xs, 'x0, 'r0) foldleft = 'xs -> 'r0 -> ('r0 -> 'x0 -> 'r0) -> 'r0
+type ('xs, 'x0, 'r0) foldright = 'xs -> 'r0 -> ('x0 -> 'r0 -> 'r0) -> 'r0
+val int1_foreach : int -> (int -> unit) -> unit = <fun>
+val int1_rforeach : int -> (int -> unit) -> unit = <fun>
+val string_init : int -> (int -> char) -> string = <fun>
+val string_length : string -> int = <fun>
+val string_of_file : string -> string = <fun>
+val string_get_at : string -> int -> char = <fun>
+val string_head : string -> char = <fun>
+val string_tail : string -> string = <fun>
+val string_cons : char -> string -> string = <fun>
+val string_snoc : string -> char -> string = <fun>
+val string_toupper : string -> string = <fun>
+val string_tolower : string -> string = <fun>
+val string_foreach : string -> (char -> unit) -> unit = <fun>
+val string_rforeach : string -> (char -> unit) -> unit = <fun>
+val string_tabulate : int -> (int -> char) -> string = <fun>
+val list_arrnize : 'a list -> 'a array = <fun>
+val list_revapp : 'a list -> 'a list -> 'a list = <fun>
+val list_reverse : 'a list -> 'a list = <fun>
+val list_forall : 'a list -> ('a -> bool) -> bool = <fun>
+val list_exists : 'a list -> ('a -> bool) -> bool = <fun>
+val list_foreach : 'a list -> ('a -> unit) -> unit = <fun>
+val list_rforeach : 'a list -> ('a -> unit) -> unit = <fun>
+val forall_to_foreach : ('xs, 'x0) forall -> ('xs, 'x0) foreach = <fun>
+val foreach_to_forall : ('xs, 'x0) foreach -> ('xs, 'x0) forall = <fun>
+val foreach_to_foldleft :
+  ('xs, 'x0) foreach -> 'xs -> 'r0 -> ('r0 -> 'x0 -> 'r0) -> 'r0 = <fun>
+val foreach_to_map_list : ('xs, 'x0) foreach -> ('xs, 'x0, 'y0) map_list =
+  <fun>
+val foreach_to_map_rlist : ('xs, 'x0) foreach -> ('xs, 'x0, 'y0) map_rlist =
+  <fun>
+val foreach_to_listize : ('xs, 'x0) foreach -> ('xs, 'x0) listize = <fun>
+val foreach_to_rlistize : ('xs, 'x0) foreach -> ('xs, 'x0) rlistize = <fun>
+val foreach_to_arrnize : ('xs, 'x0) foreach -> ('xs, 'x0) arrnize = <fun>
+val foreach_to_rarrnize : ('xs, 'x0) foreach -> ('xs, 'x0) rarrnize = <fun>
+val foreach_to_length : ('xs, 'x0) foreach -> 'xs -> int = <fun>
+val foldleft_to_length : ('xs, 'x0, int) foldleft -> 'xs -> int = <fun>
+val rforeach_to_foldright : ('xs, 'x0) rforeach -> ('xs, 'x0, 'r0) foldright =
+  <fun>
+val int1_forall : int -> (int -> bool) -> bool = <fun>
+val string_forall : string -> (char -> bool) -> bool = <fun>
+val int1_listize : int -> int list = <fun>
+val int1_rlistize : int -> int list = <fun>
+val string_listize : string -> char list = <fun>
+val string_rlistize : string -> char list = <fun>
+val int1_foldleft : int -> 'a -> ('a -> int -> 'a) -> 'a = <fun>
+val list_foldleft : 'a list -> 'b -> ('b -> 'a -> 'b) -> 'b = <fun>
+val string_foldleft : string -> 'a -> ('a -> char -> 'a) -> 'a = <fun>
+val int1_foldright : int -> 'a -> (int -> 'a -> 'a) -> 'a = <fun>
+val list_foldright : 'a list -> 'b -> ('a -> 'b -> 'b) -> 'b = <fun>
+val string_foldright : string -> 'a -> (char -> 'a -> 'a) -> 'a = <fun>
+val list_make_fwork : (('x0 -> unit) -> unit) -> 'x0 list = <fun>
+val list_make_filter : ('x0 -> bool) -> (('x0 -> unit) -> unit) -> 'x0 list =
+  <fun>
+val list_rmake_fwork : (('x0 -> unit) -> unit) -> 'x0 list = <fun>
+val list_rmake_filter : ('x0 -> bool) -> (('x0 -> unit) -> unit) -> 'x0 list =
+  <fun>
+val string_make_fwork : ((char -> unit) -> unit) -> string = <fun>
+val string_rmake_fwork : ((char -> unit) -> unit) -> string = <fun>
+val list_append : 'a list -> 'a list -> 'a list = <fun>
+val list_concat : 'a list list -> 'a list = <fun>
+val string_filter : string -> (char -> bool) -> string = <fun>
+val string_append : string -> string -> string = <fun>
+val string_concat_list : string list -> string = <fun>
+type 'a strcon = StrNil | StrCons of 'a * (unit -> 'a strcon)
+type 'a stream = unit -> 'a strcon
+val stream_map : 'a stream -> ('a -> 'b) -> 'b stream = <fun>
+val stream_foreach : 'a stream -> ('a -> unit) -> unit = <fun>
+val int1_map_stream : int -> (int -> 'a) -> 'a stream = <fun>
+val stream_append : 'a stream -> 'a stream -> 'a stream = <fun>
+val stream_concat_list : 'a stream list -> 'a stream = <fun>
+val option_foreach : 'a option -> ('a -> unit) -> unit = <fun>
+val option_forall : 'a option -> ('a -> bool) -> bool = <fun>
+val option_foldleft : 'a option -> 'r0 -> ('r0 -> 'a -> 'r0) -> 'r0 = <fun>
+val option_listize : 'x0 option -> 'x0 list = <fun>
+val option_map : 'a option -> ('a -> 'b) -> 'b option = <fun>
+val option_bind : 'a option -> ('a -> 'b option) -> 'b option = <fun>
+val option_cond : bool -> (unit -> 'a) -> 'a option = <fun>
+val ( let@ ) : 'a option -> ('a -> 'b option) -> 'b option = <fun>
+type 'a parser = char list -> ('a * char list) option
+val string_parse : 'a parser -> string -> ('a * char list) option = <fun>
+val pure : 'a -> 'b -> ('a * 'b) option = <fun>
+val fail : 'a parser = <fun>
+val bind :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val read : char parser = <fun>
+val satisfy : (char -> bool) -> char list -> (char * char list) option =
+  <fun>
+val char : char -> char list -> (char * char list) option = <fun>
+val seqright : 'a parser -> 'b parser -> char list -> ('b * char list) option =
+  <fun>
+val seqleft : 'a parser -> 'b parser -> char list -> ('a * char list) option =
+  <fun>
+val disj : 'a parser -> 'a parser -> char list -> ('a * char list) option =
+  <fun>
+val map : 'a parser -> ('a -> 'b) -> char list -> ('b * char list) option =
+  <fun>
+val many : 'a parser -> char list -> ('a list * char list) option = <fun>
+val many1 : 'a parser -> char list -> ('a list * char list) option = <fun>
+val many' : (unit -> 'a parser) -> char list -> ('a list * char list) option =
+  <fun>
+val many1' : (unit -> 'a parser) -> char list -> ('a list * char list) option =
+  <fun>
+val whitespace : char list -> (unit * char list) option = <fun>
+val digit : char list -> (char * char list) option = <fun>
+val natural : int parser = <fun>
+val literal : string -> char list -> (unit * char list) option = <fun>
+val ( >>= ) :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val ( let* ) :
+  'a parser -> ('a -> 'b parser) -> char list -> ('b * char list) option =
+  <fun>
+val ( >> ) : 'a parser -> 'b parser -> char list -> ('b * char list) option =
+  <fun>
+val ( << ) : 'a parser -> 'b parser -> char list -> ('a * char list) option =
+  <fun>
+val ( <|> ) : 'a parser -> 'a parser -> char list -> ('a * char list) option =
+  <fun>
+val ( >|= ) : 'a parser -> ('a -> 'b) -> char list -> ('b * char list) option =
+  <fun>
+val ( >| ) : 'a parser -> 'b -> char list -> ('b * char list) option = <fun>
+val whitespaces : char list -> (unit * char list) option = <fun>
+val whitespaces1 : char list -> (unit * char list) option = <fun>
+val keyword : string -> char list -> (unit * char list) option = <fun>
+#   * * * * * * * * * *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     [1mLines 325-326, characters 0-13[0m:
+325 | match input with 
+326 |   Int(x) -> x
+[1;35mWarning[0m 8 [partial-match]: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(Unit|Bool _|UOpr (_, _)|BOpr (_, _, _)|Var _|Fun (_, _, _)|App (_, _)|
+Let (_, _, _)|Seq (_, _)|Ifte (_, _, _)|Trace _)
+[1mLines 345-351, characters 0-13[0m:
+345 | match input with 
+346 | | Bool(false) -> "False"
+347 | | Bool(true) -> "True"
+348 | | Unit -> "Unit"
+349 | (* need to change this at the end*)
+350 | | Int(x) -> int2str(x)
+351 | | Var(x) -> x
+[1;35mWarning[0m 8 [partial-match]: this pattern-matching is not exhaustive.
+Here is an example of a case that is not matched:
+(UOpr (_, _)|BOpr (_, _, _)|Fun (_, _, _)|App (_, _)|Let (_, _, _)|
+Seq (_, _)|Ifte (_, _, _)|Trace _)
+[1mLine 400, characters 8-13[0m:
+400 | let _ = print(compile("let i x = x in 
+              [1;31m^^^^^[0m
+[1;31mError[0m: Unbound value print
+# 

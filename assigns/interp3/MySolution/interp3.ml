@@ -371,7 +371,7 @@ let rec big_compile(state: expr): string =
   | Sub -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Sub;"]
   | Mul -> string_concat[big_compile(y) ; big_compile(z) ; "Mul;"]
   | Div -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Div;"]
-  | Mod -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Div;" ; big_compile(z) ; "Mul;" ; big_compile(y) ; "Swap; Sub;"]
+  | Mod -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Div;" ; big_compile(z) ; "Mul;" ; big_compile(y) ; "Sub;"]
   | And -> string_concat[big_compile(y) ; big_compile(z) ; "And;"]
   | Or -> string_concat[big_compile(y) ; big_compile(z) ; "Or;"]
   | Lt -> string_concat[big_compile(y) ; big_compile(z) ; "Swap; Lt; "]
@@ -397,7 +397,6 @@ let compile (s : string) : string = (* YOUR CODE *)
 (*let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)") *)
 (*let test1 = parse_prog("let rec factorial x = if 2>x then -1 else factorial(x-1)*x in factorial(10) ") ;;*)
 (*let test = parse_prog("let poly x = x*x -4 * x + 7 in poly(4)")*)
-(*let test = compile("-3+1");;
-let parse = parse_prog("let foo x = if x = 2 then -x + 1 else x in foo 2")
-let test1 = compile("let foo x = if x = 2 then -x + 1 else x in foo 2") ;;
-*)
+
+let _ = print_endline(compile("111 mod 10
+") );;
