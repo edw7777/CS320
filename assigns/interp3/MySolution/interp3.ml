@@ -334,13 +334,21 @@ let parse_prog (s : string) : expr =
 let string_concat (input: string list) : string = 
   list_foldright(input)("")(fun(element)(res) -> string_append(element)(res))
 
+let rec helper(i0: int):string = 
+  if i0 = 0 then "" 
+  else string_concat[helper(i0 / 10) ; (str(chr(i0 mod 10 +48))) ]
+
+let int2str(i0: int): string = 
+  if i0 = 0 then "0" else
+  if i0 < 0 then string_concat["-" ; helper(-1*i0)] else helper(i0)
+
 let toString(input : expr) : string =
 match input with 
 | Bool(false) -> "False"
 | Bool(true) -> "True"
 | Unit -> "Unit"
 (* need to change this at the end*)
-| Int(x) -> toString(x)
+| Int(x) -> int2str(x)
 | Var(x) -> x
 
 let rec big_compile(state: expr): string =
