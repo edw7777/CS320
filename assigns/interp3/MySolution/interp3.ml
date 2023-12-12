@@ -353,8 +353,8 @@ match input with
 
 let rec big_compile(state: expr): string =
 (match state with
-| Int(x)-> string_concat["Push " ; toString(x) ; "; "]
-| Bool (x) -> string_concat["Push " ; toString(x) ; "; "]
+| Int(x)-> string_concat["Push " ; int2str(x) ; "; "]
+| Bool (x) -> string_concat["Push " ; toString(Bool(x)) ; "; "]
 | Unit -> "Push Unit;"
 | Var(x) -> string_concat["Push " ; x ; "; Lookup;" ]
 | UOpr(x, y) -> (match x with
